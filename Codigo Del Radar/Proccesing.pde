@@ -1,21 +1,4 @@
-/* Arduino Radar Project
-*
-* Version Actualizada. Se ajusta a cualquier resolucion!
-* Tan solo cambia los valores en la funcion size() con los de tu pantalla.
-*
-*
-* Codigo hecho por Dejan Nedelkovski,
-* www.HowToMechatronics.com
-*
-* Traducido por El Taller De TD
-* youtube/eltallerdetd
-*
-*/
-import processing.serial.*; // Importa la libreria necesaria para la comunicacion Serial
-import java.awt.event.KeyEvent; // Importa la libreria para leer datos desde el puerto Serial
-import java.io.IOException;
-Serial myPort; // define el objeto serial
-// define las variables
+
 String angle="";
 String distance="";
 String data="";
@@ -27,22 +10,22 @@ int index2=0;
 PFont orcFont;
 
 void setup() {
-  size(900, 500); // ***CAMBIA ESTO CON LOS VALORES DE TU RESOLUCION***
+  size(900, 500); 
   smooth();
-  myPort = new Serial(this,"COM3", 9600); // Comienza la comunicacion Serial, cambia el COM3 por el puerto que uses
-  myPort.bufferUntil('.'); // Lee los datos enviados al puerto serial, angulo, distancia.
+  myPort = new Serial(this,"COM3", 9600); 
+  myPort.bufferUntil('.'); 
   orcFont = loadFont("OCRAExtended-30.vlw");
 }
 
 void draw() {
   fill(98,245,31);
   textFont(orcFont);
-  // Simulas efectos visuales y de transicion
+  
   noStroke();
   fill(0,4);
   rect(0, 0, width, height-height*0.065);
-  fill(98,245,31); // color verde
-  // Llama las funciones para dibujar el radar
+  fill(98,245,31); 
+  
   drawRadar();
   drawLine();
   drawObject();
@@ -50,18 +33,18 @@ void draw() {
 }
 
 void serialEvent (Serial myPort) {
-  // Pone la informacion leida en la variable data
+  
   data = myPort.readStringUntil('.');
   if (data != null) {
-    data = data.trim(); // Elimina cualquier espacio en blanco adicional
-    index1 = data.indexOf(","); // busca la , y la coloca en la variable index1
+    data = data.trim(); 
+    index1 = data.indexOf(","); 
     if (index1 != -1) {
-      angle = data.substring(0, index1); // Lee desde la posicion 0 hasta el index1, osea el angulo
-      distance = data.substring(index1 + 1); // Lee el resto, osea la distancia
+      angle = data.substring(0, index1); 
+      distance = data.substring(index1 + 1); 
       // convierte los Strings a enteros
       iAngle = int(angle);
       iDistance = int(distance);
-      println("Angle: " + iAngle + ", Distance: " + iDistance); // Agrega este mensaje de depuración
+      println("Angle: " + iAngle + ", Distance: " + iDistance); 
     }
   }
 }
@@ -102,8 +85,8 @@ void drawLine() {
   pushMatrix();
   strokeWeight(9);
   stroke(30,250,60);
-  translate(width/2, height-height*0.074); // moves the starting coordinates to new location
-  line(0, 0, (height-height*0.12)*cos(radians(iAngle)), -(height-height*0.12)*sin(radians(iAngle))); // draws the line according to the angle
+  translate(width/2, height-height*0.074); 
+  line(0, 0, (height-height*0.12)*cos(radians(iAngle)), -(height-height*0.12)*sin(radians(iAngle))); 
   popMatrix();
 }
 
@@ -126,7 +109,7 @@ void drawText() {
   textSize(40);
   text("Object: " + noObject, width-width*0.875, height-height*0.0277);
   text("Angle: " + iAngle + " °", width-width*0.48, height-height*0.0277);
-  text("Distance: " + iDistance + " cm", width-width*0.26, height-height*0.0277); // Asegúrate de que esto se actualiza correctamente
+  text("Distance: " + iDistance + " cm", width-width*0.26, height-height*0.0277); 
   textSize(25);
   fill(98,245,60);
   translate((width-width*0.4994)+width/2*cos(radians(30)), (height-height*0.0907)-width/2*sin(radians(30)));
